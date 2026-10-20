@@ -56,3 +56,15 @@ def updated_label(value):
         raise ValueError('Fecha sin zona horaria')
     local = stamp.astimezone(ZoneInfo('Europe/Madrid'))
     return local.strftime('%d/%m/%Y a las %H:%M') + ' (hora de Sevilla)'
+
+
+def display_rows(records, codes):
+    """Incluye centros del listado BUS sin observaciones en el paquete vigente."""
+    indexed = {row['centre']: row['counts'] for row in records}
+    centres = sorted(set(TARGETS) | set(indexed))
+    result = []
+    for centre in centres:
+        counts = indexed.get(centre, {})
+        values = [counts.get(code, 0) for code in codes]
+        result.append([centre, *values, sum(values)])
+    return result

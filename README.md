@@ -13,3 +13,5 @@ La fecha corresponde a la preparación de los datos, mostrada en hora de Sevilla
 Estética pastel inspirada en https://idus.us.es/ (granate observado #BE0F2E y amarillo #F9B905); adaptación visual, no manual oficial de identidad.
 
 Actualización programada diariamente a las 09:00 de Sevilla mediante Windows, desde el ordenador de origen encendido, con sesión iniciada y OneDrive sincronizado. La fecha visible indica la última preparación completada. Los fallos conservan la última versión publicada.
+
+La tabla incluye todos los centros del listado de objetivos BUS, aunque no tengan observaciones en el paquete vigente. Se muestran con cero en cada cuaderno; también se mantienen los centros adicionales que figuren en los datos. No se añaden respuestas ni se modifican los totales.

@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
-from matrix_style import COLORS, TARGETS, level, total_style, updated_label
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows
 
 CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
 
@@ -79,11 +79,8 @@ def main():
         st.stop()
     st.markdown('**Última actualización de los datos: '+updated_label(data['updated_utc'])+'**')
     st.caption('Observaciones desde el 05/10/2026 · Actualización diaria programada a las 09:00 (Sevilla)')
-    source=[]
-    for row in data['rows']:
-        label=row['centre']
-        values=[row['counts'][c] for c in CODES]
-        source.append([label,*values,sum(values)])
+    source=display_rows(data['rows'], CODES)
+    st.caption('Se incluyen todos los centros del listado BUS. Un 0 indica que no hay observaciones asociadas en esta instantánea.')
     selected=st.sidebar.multiselect('Centros',[r[0] for r in source])
     rows=[r for r in source if not selected or r[0] in selected]
     rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,6)]])

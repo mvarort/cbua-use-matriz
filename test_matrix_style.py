@@ -7,11 +7,29 @@ from shutil import copyfile
 from openpyxl import load_workbook
 import pandas as pd
 from streamlit.testing.v1 import AppTest
-from matrix_style import COLORS, TARGETS, level, total_style, updated_label
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows
 from app import excel
 
 
 class MatrixStyleTests(unittest.TestCase):
+    def test_all_centres_present_without_changing_counts(self):
+        codes=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
+        records=[{'centre':'Rector Machado','counts':dict.fromkeys(codes,2)}]
+        rows=display_rows(records,codes)
+        lookup={r[0]:r[1:] for r in rows}
+        for centre in ['Económicas','Humanidades','Ingeniería Agronómica','Matemáticas','Bellas Artes']:
+            self.assertEqual(lookup[centre],[0,0,0,0,0])
+        self.assertEqual(lookup['Rector Machado'],[2,2,2,2,8])
+        self.assertEqual(sum(r[-1] for r in rows),8)
+        records.append({'centre':'Económicas','counts':dict.fromkeys(codes,3)})
+        updated=display_rows(records,codes)
+        self.assertEqual(next(r for r in updated if r[0]=='Económicas')[1:],[3,3,3,3,12])
+        self.assertEqual(len([r for r in updated if r[0]=='Económicas']),1)
+        book=load_workbook(BytesIO(excel(['Centro',*codes,'Total'],rows)))
+        try:
+            self.assertTrue(any(r[0]=='Bellas Artes' and r[-1]==0 for r in book.active.iter_rows(values_only=True)))
+        finally:book.close()
+
     def test_all_threshold_boundaries(self):
         for centre,(first,second,third) in TARGETS.items():
             for total,expected in [(0,'Por debajo del primer objetivo'),(first-1,'Por debajo del primer objetivo'),(first,'Cumplido (con condiciones)'),(second-1,'Cumplido (con condiciones)'),(second,'Cumplido suficiente'),(third-1,'Cumplido suficiente'),(third,'Cumplido satisfactorio'),(third+1,'Cumplido satisfactorio')]:
