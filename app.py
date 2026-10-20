@@ -78,7 +78,7 @@ def main():
         st.error('La matriz no está disponible o sus totales son incompatibles.')
         st.stop()
     st.markdown('**Última actualización de los datos: '+updated_label(data['updated_utc'])+'**')
-    st.caption('Observaciones desde el 05/10/2026 · Actualización manual, no en tiempo real')
+    st.caption('Observaciones desde el 05/10/2026 · Actualización diaria programada a las 09:00 (Sevilla)')
     source=[]
     for row in data['rows']:
         label=row['centre']
@@ -102,7 +102,7 @@ def main():
         st.caption('Cada respuesta de Forms cuenta como una observación de su cuaderno. No se analizan tareas. '
                    'Se excluyen las respuestas anteriores al corte y las pruebas 65/66 en UX 1_1. '
                    'Solo se incluyen observaciones con centro informado e identificado. Los centros conservan su denominación original. Los totales suman observaciones, no personas únicas. '
-                   'La actualización es manual, no en tiempo real.')
+                   'Actualización diaria desde el ordenador de origen, si está disponible y sincronizado; no es tiempo real.')
 
 
 if __name__=='__main__':
