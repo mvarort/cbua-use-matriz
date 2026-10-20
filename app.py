@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label
 
 CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
 
@@ -41,8 +42,21 @@ def excel(columns,rows):
             if isinstance(value,str):cell.data_type='s'
             cell.alignment=Alignment(vertical='top',wrap_text=True)
             if i==1 or i==len(rows)+1:
-                cell.font=Font(bold=True,color='FFFFFF' if i==1 else '173B37')
-                cell.fill=PatternFill('solid',fgColor='16817A' if i==1 else 'EAF5F2')
+                cell.font=Font(bold=True,color='FFFFFF' if i==1 else '6E2332')
+                if i==1:cell.fill=PatternFill('solid',fgColor='9E354B')
+    for number, row in enumerate(rows, 2):
+        state=level(row[0], row[-1])
+        if state:
+            sheet.cell(number, len(columns)).fill=PatternFill('solid',fgColor=COLORS[state].lstrip('#'))
+    legend=book.create_sheet('Leyenda')
+    legend.append(['Aplicación','Total del centro sumando los cuatro cuadernos'])
+    for state,color in COLORS.items():
+        legend.append([state]);legend.cell(legend.max_row,1).fill=PatternFill('solid',fgColor=color.lstrip('#'))
+    legend.append(['Sin relleno','Centro sin objetivo definido o total general'])
+    legend.append(['Centro','Con condiciones','Suficiente','Satisfactorio'])
+    for centre,limits in TARGETS.items():legend.append([centre,*limits])
+    legend.column_dimensions['A'].width=44
+    legend.column_dimensions['B'].width=55
     sheet.freeze_panes='B2'
     sheet.auto_filter.ref=f'A1:F{len(rows)}'
     for col in 'BCDEF':sheet.column_dimensions[col].width=16
@@ -53,8 +67,8 @@ def excel(columns,rows):
 
 def main():
     st.set_page_config(page_title='Matriz USE | CBUA',page_icon='📚',layout='wide')
-    st.markdown('<style>[data-testid="stAppViewContainer"]{background:#f8fafb;}[data-testid="stSidebar"]{background:#f0f5f4;}.block-container{max-width:1250px;padding-top:3rem;}</style>',unsafe_allow_html=True)
-    st.sidebar.markdown('### Universidad de Sevilla')
+    st.markdown('<style>[data-testid="stAppViewContainer"]{background:#FCFAFA;}[data-testid="stSidebar"]{background:#F6EDEF;}h1,h2,h3{color:#8C293F;}[data-testid="stSidebar"]{border-right:1px solid #EAD9DE;}button[kind="secondary"]{border-color:#D7B8C0;}.block-container{max-width:1250px;padding-top:3rem;}</style>',unsafe_allow_html=True)
+    st.sidebar.markdown('### Biblioteca de la Universidad de Sevilla')
     st.title('Matriz de observaciones USE')
     st.caption('Resultados provisionales — estudios UX en curso')
     try:
@@ -63,7 +77,8 @@ def main():
     except Exception:
         st.error('La matriz no está disponible o sus totales son incompatibles.')
         st.stop()
-    st.caption('Desde el 05/10/2026 · Actualización manual UTC: '+data['updated_utc'])
+    st.markdown('**Última actualización de los datos: '+updated_label(data['updated_utc'])+'**')
+    st.caption('Observaciones desde el 05/10/2026 · Actualización manual, no en tiempo real')
     source=[]
     for row in data['rows']:
         label=row['centre']
@@ -73,9 +88,16 @@ def main():
     rows=[r for r in source if not selected or r[0] in selected]
     rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,6)]])
     columns=['Centro',*CODES,'Total']
-    st.dataframe(pd.DataFrame(rows,columns=columns),hide_index=True,use_container_width=True,height=min(900,max(180,40+35*len(rows))))
+    st.dataframe(pd.DataFrame(rows,columns=columns).style.apply(total_style,axis=1),hide_index=True,width='stretch',height=min(900,max(180,40+35*len(rows))))
+    st.markdown('**Cumplimiento · solo columna Total**')
+    st.markdown('<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+''.join(
+        '<span style="background:'+color+';color:#333333;padding:6px 10px;border-radius:6px;font-size:0.85rem">'+state+'</span>'
+        for state,color in COLORS.items())+'</div>',unsafe_allow_html=True)
+    st.caption('Objetivos por centro sobre la suma de los cuatro cuadernos. Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
     st.download_button('Descargar matriz Excel (.xlsx)',excel(columns,rows),file_name='Matriz_USE.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    with st.expander('Objetivos por centro'):
+        st.dataframe(pd.DataFrame([[name,*limits] for name,limits in TARGETS.items()],columns=['Centro','Con condiciones','Suficiente','Satisfactorio']),hide_index=True,width='stretch')
     with st.expander('Criterios del recuento'):
         st.caption('Cada respuesta de Forms cuenta como una observación de su cuaderno. No se analizan tareas. '
                    'Se excluyen las respuestas anteriores al corte y las pruebas 65/66 en UX 1_1. '

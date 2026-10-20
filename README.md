@@ -7,3 +7,7 @@ No contiene respuestas individuales, identificadores, comentarios ni fuentes Exc
 Ejecutar: `streamlit run app.py`.
 
 Solo se muestran y descargan observaciones con centro informado e identificado.
+
+La fecha corresponde a la preparación manual de los datos, mostrada en hora de Sevilla. Colores de cumplimiento solo en Total: umbrales BUS aportados el 20/10/2026, sobre la suma de los cuatro cuadernos. Rector Machado y el total general quedan sin relleno. La descarga conserva los colores e incluye una hoja de leyenda y objetivos.
+
+Estética pastel inspirada en https://idus.us.es/ (granate observado #BE0F2E y amarillo #F9B905); adaptación visual, no manual oficial de identidad.
