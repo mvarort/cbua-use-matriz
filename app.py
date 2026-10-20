@@ -17,7 +17,7 @@ def validate(data):
         raise ValueError('Cuadernos incompatibles')
     seen=set()
     for row in data['rows']:
-        if set(row)!={'state','centre','counts'} or row['state'] not in {'identificado','sin_centro','conflicto'} or set(row['counts'])!=set(CODES):
+        if set(row)!={'state','centre','counts'} or row['state']!='identificado' or set(row['counts'])!=set(CODES):
             raise ValueError('Fila incompatible')
         if row['state']=='identificado' and (not isinstance(row['centre'],str) or not row['centre'].strip()):
             raise ValueError('Centro incompatible')
@@ -66,7 +66,7 @@ def main():
     st.caption('Desde el 05/10/2026 · Actualización manual UTC: '+data['updated_utc'])
     source=[]
     for row in data['rows']:
-        label=row['centre'] if row['state']=='identificado' else ('Sin centro informado' if row['state']=='sin_centro' else 'Centro pendiente de identificación')
+        label=row['centre']
         values=[row['counts'][c] for c in CODES]
         source.append([label,*values,sum(values)])
     selected=st.sidebar.multiselect('Centros',[r[0] for r in source])
@@ -79,7 +79,7 @@ def main():
     with st.expander('Criterios del recuento'):
         st.caption('Cada respuesta de Forms cuenta como una observación de su cuaderno. No se analizan tareas. '
                    'Se excluyen las respuestas anteriores al corte y las pruebas 65/66 en UX 1_1. '
-                   'Los centros conservan su denominación original. Los totales suman observaciones, no personas únicas. '
+                   'Solo se incluyen observaciones con centro informado e identificado. Los centros conservan su denominación original. Los totales suman observaciones, no personas únicas. '
                    'La actualización es manual, no en tiempo real.')
 
 

@@ -120,25 +120,15 @@
         "UX_2_4": 0,
         "UX_2_5": 0
       }
-    },
-    {
-      "state": "sin_centro",
-      "centre": null,
-      "counts": {
-        "UX_1_1": 0,
-        "UX_2_1": 0,
-        "UX_2_4": 1,
-        "UX_2_5": 0
-      }
     }
   ],
   "totals": {
     "UX_1_1": 125,
     "UX_2_1": 59,
-    "UX_2_4": 54,
+    "UX_2_4": 53,
     "UX_2_5": 57
   },
-  "total": 295,
+  "total": 294,
   "kind": "cbua_use_public_matrix_v1",
   "from_inclusive": "2026-10-05"
 }
