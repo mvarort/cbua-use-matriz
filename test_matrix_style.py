@@ -63,6 +63,26 @@ class MatrixStyleTests(unittest.TestCase):
             self.assertEqual(sheet['F4'].value,12)
         finally:book.close()
 
+    def test_grouped_contract_ui_and_excel(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);(root/'data').mkdir()
+            for name in ['app.py','matrix_style.py']:copyfile(Path(__file__).parent/name,root/name)
+            codes=('UX_1_1','UX_2_1_2_3')
+            data={'kind':'cbua_use_public_matrix_v2','updated_utc':'2026-10-20T09:28:23Z','from_inclusive':'2026-10-05','rows':[{'state':'identificado','centre':'Centro FICTICIO A','counts':{'UX_1_1':3,'UX_2_1_2_3':10}}],'totals':{'UX_1_1':3,'UX_2_1_2_3':10},'total':13}
+            (root/'data/matrix.json').write_text(json.dumps(data),encoding='utf-8')
+            app=AppTest.from_file(str(root/'app.py')).run()
+            self.assertFalse(app.exception)
+            frame=app.dataframe[0].value
+            self.assertEqual(list(frame.columns),['Centro',*codes,'Total'])
+            self.assertEqual(frame.iloc[-1].tolist(),['TOTAL',3,10,13])
+            self.assertTrue(any('sin sumarlos' in c.value for c in app.caption))
+            book=load_workbook(BytesIO(excel(list(frame.columns),frame.values.tolist())))
+            try:
+                self.assertEqual(book.active.max_column,4)
+                self.assertTrue(book.active.auto_filter.ref.startswith('A1:D'))
+                self.assertEqual(book.active.cell(book.active.max_row,4).value,13)
+            finally:book.close()
+
     def test_synthetic_ui_and_filter(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);(root/'data').mkdir()

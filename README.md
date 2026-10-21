@@ -15,3 +15,7 @@ Estética pastel inspirada en https://idus.us.es/ (granate observado #BE0F2E y a
 Actualización programada diariamente a las 09:00 de Sevilla mediante Windows, desde el ordenador de origen encendido, con sesión iniciada y OneDrive sincronizado. La fecha visible indica la última preparación completada. Los fallos conservan la última versión publicada.
 
 La tabla incluye todos los centros del listado de objetivos BUS, aunque no tengan observaciones en el paquete vigente. Se muestran con cero en cada cuaderno; también se mantienen los centros adicionales que figuren en los datos. No se añaden respuestas ni se modifican los totales.
+
+## Regla de agrupación (21/10/2026)
+
+La columna `UX_2_1_2_3` es el encabezado solicitado para el bloque de **UX 2_1, UX 2_4 y UX 2_5**. No incluye fuentes UX 2_2 ni UX 2_3. Cuenta el máximo de los tres por biblioteca, nunca su suma ni el máximo de los totales globales. El Total suma UX 1_1 y ese bloque. El contrato público v2 conserva la fecha de lectura de las fuentes. Los colores se aplican al total recalculado; no se modifican los objetivos.

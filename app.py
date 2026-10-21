@@ -6,19 +6,25 @@ import pandas as pd
 import streamlit as st
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.utils import get_column_letter
 from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows
 
-CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
+LEGACY_CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
+CODES=('UX_1_1','UX_2_1_2_3')
+
+def package_codes(data):
+    return CODES if data['kind']=='cbua_use_public_matrix_v2' else LEGACY_CODES
 
 
 def validate(data):
-    if set(data)!={'kind','updated_utc','from_inclusive','rows','totals','total'} or data['kind']!='cbua_use_public_matrix_v1' or data['from_inclusive']!='2026-10-05':
+    if set(data)!={'kind','updated_utc','from_inclusive','rows','totals','total'} or data['kind'] not in {'cbua_use_public_matrix_v1','cbua_use_public_matrix_v2'} or data['from_inclusive']!='2026-10-05':
         raise ValueError('Contrato incompatible')
-    if set(data['totals'])!=set(CODES):
+    codes=package_codes(data)
+    if set(data['totals'])!=set(codes):
         raise ValueError('Cuadernos incompatibles')
     seen=set()
     for row in data['rows']:
-        if set(row)!={'state','centre','counts'} or row['state']!='identificado' or set(row['counts'])!=set(CODES):
+        if set(row)!={'state','centre','counts'} or row['state']!='identificado' or set(row['counts'])!=set(codes):
             raise ValueError('Fila incompatible')
         if row['state']=='identificado' and (not isinstance(row['centre'],str) or not row['centre'].strip()):
             raise ValueError('Centro incompatible')
@@ -28,7 +34,7 @@ def validate(data):
         if key in seen or any(type(n) is not int or n<0 for n in row['counts'].values()):
             raise ValueError('Recuento incompatible')
         seen.add(key)
-    if any(type(data['totals'][c]) is not int or data['totals'][c]!=sum(r['counts'][c] for r in data['rows']) for c in CODES):
+    if any(type(data['totals'][c]) is not int or data['totals'][c]!=sum(r['counts'][c] for r in data['rows']) for c in codes):
         raise ValueError('Totales contradictorios')
     if type(data['total']) is not int or data['total']!=sum(data['totals'].values()):
         raise ValueError('Total contradictorio')
@@ -49,7 +55,7 @@ def excel(columns,rows):
         if state:
             sheet.cell(number, len(columns)).fill=PatternFill('solid',fgColor=COLORS[state].lstrip('#'))
     legend=book.create_sheet('Leyenda')
-    legend.append(['Aplicación','Total del centro sumando los cuatro cuadernos'])
+    legend.append(['Aplicación','Total: UX 1_1 + máximo(UX 2_1, UX 2_4, UX 2_5)' if 'UX_2_1_2_3' in columns else 'Total de los cuatro cuadernos'])
     for state,color in COLORS.items():
         legend.append([state]);legend.cell(legend.max_row,1).fill=PatternFill('solid',fgColor=color.lstrip('#'))
     legend.append(['Sin relleno','Centro sin objetivo definido o total general'])
@@ -58,8 +64,8 @@ def excel(columns,rows):
     legend.column_dimensions['A'].width=44
     legend.column_dimensions['B'].width=55
     sheet.freeze_panes='B2'
-    sheet.auto_filter.ref=f'A1:F{len(rows)}'
-    for col in 'BCDEF':sheet.column_dimensions[col].width=16
+    sheet.auto_filter.ref=f'A1:{get_column_letter(len(columns))}{len(rows)}'
+    for number in range(2,len(columns)+1):sheet.column_dimensions[get_column_letter(number)].width=22
     sheet.column_dimensions['A'].width=48
     result=BytesIO();book.save(result);book.close()
     return result.getvalue()
@@ -79,18 +85,21 @@ def main():
         st.stop()
     st.markdown('**Última actualización de los datos: '+updated_label(data['updated_utc'])+'**')
     st.caption('Observaciones desde el 05/10/2026 · Actualización diaria programada a las 09:00 (Sevilla)')
-    source=display_rows(data['rows'], CODES)
+    codes=package_codes(data)
+    source=display_rows(data['rows'], codes)
     st.caption('Se incluyen todos los centros del listado BUS. Un 0 indica que no hay observaciones asociadas en esta instantánea.')
     selected=st.sidebar.multiselect('Centros',[r[0] for r in source])
     rows=[r for r in source if not selected or r[0] in selected]
-    rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,6)]])
-    columns=['Centro',*CODES,'Total']
+    rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,len(codes)+2)]])
+    columns=['Centro',*codes,'Total']
     st.dataframe(pd.DataFrame(rows,columns=columns).style.apply(total_style,axis=1),hide_index=True,width='stretch',height=min(900,max(180,40+35*len(rows))))
     st.markdown('**Cumplimiento · solo columna Total**')
     st.markdown('<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+''.join(
         '<span style="background:'+color+';color:#333333;padding:6px 10px;border-radius:6px;font-size:0.85rem">'+state+'</span>'
         for state,color in COLORS.items())+'</div>',unsafe_allow_html=True)
-    st.caption('Objetivos por centro sobre la suma de los cuatro cuadernos. Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
+    st.caption('Objetivos por centro sobre el total mostrado. Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
+    if data['kind']=='cbua_use_public_matrix_v2':
+        st.caption('UX_2_1_2_3 agrupa UX 2_1, UX 2_4 y UX 2_5: se toma el mayor recuento de cada biblioteca, sin sumarlos. Total = UX 1_1 + bloque agrupado. No equivale a personas únicas.')
     st.download_button('Descargar matriz Excel (.xlsx)',excel(columns,rows),file_name='Matriz_USE.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     with st.expander('Objetivos por centro'):
