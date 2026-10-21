@@ -16,7 +16,7 @@ def fixture():
         books['UX_2_1']['rows'].append({'centre':centre,'cells':[
             {'value':number,'type':'value','format':'0'},
             {'value':'=Texto literal\nSegunda lÃ­nea Ã±','type':'value','format':'@'},
-            {'value':1.5,'type':'value','format':'0.00'}]})
+            {'value':1.5,'type':'value','format':None}]})
     return {'kind':'cbua_use_downloads_v1','books':books,'updated_utc':'2026-10-21T12:00:00Z'}
 
 

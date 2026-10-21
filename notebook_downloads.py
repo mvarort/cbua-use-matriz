@@ -50,7 +50,7 @@ def workbook(sheet, centre, code):
             # Los textos que empiezan por '=' se exportan literalmente, nunca como fórmulas.
             if isinstance(value, str):
                 cell.data_type = 's'
-            cell.number_format = original['format']
+            cell.number_format = original['format'] or 'General'
             cell.alignment = Alignment(wrap_text=True, vertical='top')
     for cell in ws[1]:
         cell.data_type = 's'
