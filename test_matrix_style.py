@@ -90,7 +90,7 @@ class MatrixStyleTests(unittest.TestCase):
     def test_grouped_contract_ui_and_excel(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);(root/'data').mkdir()
-            for name in ['app.py','matrix_style.py']:copyfile(Path(__file__).parent/name,root/name)
+            for name in ['app.py','matrix_style.py','notebook_downloads.py']:copyfile(Path(__file__).parent/name,root/name)
             codes=('UX_1_1','UX_2_1_2_3')
             data={'kind':'cbua_use_public_matrix_v2','updated_utc':'2026-10-20T09:28:23Z','from_inclusive':'2026-10-05','rows':[{'state':'identificado','centre':'Centro FICTICIO A','counts':{'UX_1_1':3,'UX_2_1_2_3':10}}],'totals':{'UX_1_1':3,'UX_2_1_2_3':10},'total':13}
             (root/'data/matrix.json').write_text(json.dumps(data),encoding='utf-8')
@@ -99,7 +99,9 @@ class MatrixStyleTests(unittest.TestCase):
             frame=app.dataframe[0].value
             self.assertEqual(list(frame.columns),['Centro',*codes,'Total'])
             self.assertEqual(frame.iloc[-1].tolist(),['TOTAL',3,10,13])
-            self.assertTrue(any('sin sumarlos' in c.value for c in app.caption))
+            self.assertEqual(len(app.dataframe),1)
+            self.assertEqual(len(app.expander),0)
+            self.assertEqual(len(app.get('download_button')),0)
             book=load_workbook(BytesIO(excel(list(frame.columns),frame.values.tolist())))
             try:
                 self.assertEqual(book.active.max_column,4)
@@ -107,10 +109,10 @@ class MatrixStyleTests(unittest.TestCase):
                 self.assertEqual(book.active.cell(book.active.max_row,4).value,13)
             finally:book.close()
 
-    def test_synthetic_ui_and_filter(self):
+    def test_synthetic_ui_always_shows_all_centres(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);(root/'data').mkdir()
-            for name in ['app.py','matrix_style.py']:copyfile(Path(__file__).parent/name,root/name)
+            for name in ['app.py','matrix_style.py','notebook_downloads.py']:copyfile(Path(__file__).parent/name,root/name)
             codes=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
             data={'kind':'cbua_use_public_matrix_v1','updated_utc':'2026-10-20T09:28:23Z','from_inclusive':'2026-10-05','rows':[{'state':'identificado','centre':'Centro FICTICIO A','counts':dict.fromkeys(codes,3)},{'state':'identificado','centre':'Centro FICTICIO B','counts':dict.fromkeys(codes,2)}],'totals':dict.fromkeys(codes,5),'total':20}
             (root/'data/matrix.json').write_text(json.dumps(data),encoding='utf-8')
@@ -118,9 +120,10 @@ class MatrixStyleTests(unittest.TestCase):
             self.assertFalse(app.exception)
             self.assertEqual(app.dataframe[0].value.iloc[-1,-1],20)
             self.assertTrue(any('20/10/2026 a las 11:28' in m.value for m in app.markdown))
-            app.multiselect[0].set_value(['Centro FICTICIO A']).run()
+            self.assertEqual(len(app.multiselect),0)
+            app.run()
             self.assertFalse(app.exception)
-            self.assertEqual(app.dataframe[0].value.iloc[-1,-1],12)
+            self.assertEqual(app.dataframe[0].value.iloc[-1,-1],20)
 
 
 if __name__=='__main__':unittest.main()

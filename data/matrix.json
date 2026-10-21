@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-21T11:28:49.685954Z",
+  "updated_utc": "2026-10-21T15:02:00.092721Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -16,7 +16,7 @@
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
         "UX_1_1": 17,
-        "UX_2_1_2_3": 10
+        "UX_2_1_2_3": 11
       }
     },
     {
@@ -40,7 +40,7 @@
       "centre": "Derecho y Ciencias del Trabajo",
       "counts": {
         "UX_1_1": 29,
-        "UX_2_1_2_3": 16
+        "UX_2_1_2_3": 18
       }
     },
     {
@@ -85,6 +85,14 @@
     },
     {
       "state": "identificado",
+      "centre": "Matemáticas",
+      "counts": {
+        "UX_1_1": 0,
+        "UX_2_1_2_3": 4
+      }
+    },
+    {
+      "state": "identificado",
       "centre": "Politécnica",
       "counts": {
         "UX_1_1": 8,
@@ -110,7 +118,7 @@
   ],
   "totals": {
     "UX_1_1": 133,
-    "UX_2_1_2_3": 84
+    "UX_2_1_2_3": 91
   },
-  "total": 217
+  "total": 224
 }
