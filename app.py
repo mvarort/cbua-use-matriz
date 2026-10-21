@@ -7,7 +7,7 @@ import streamlit as st
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows, cell_levels, COLUMN_LABELS, group_targets
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows, cell_levels, COLUMN_LABELS
 
 LEGACY_CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
 CODES=('UX_1_1','UX_2_1_2_3')
@@ -60,12 +60,8 @@ def excel(columns,rows):
     for state,color in COLORS.items():
         legend.append([state]);legend.cell(legend.max_row,1).fill=PatternFill('solid',fgColor=color.lstrip('#'))
     legend.append(['Sin relleno','Centro sin objetivo definido o total general'])
-    legend.append(['Centro (mínimo por grupo)' if 'UX_2_1_2_3' in columns else 'Centro','Con condiciones','Suficiente','Satisfactorio'])
-    grouped='UX_2_1_2_3' in columns
-    if grouped:
-        legend.append(['Regla','Cada grupo debe alcanzar su mínimo; el Total toma el menor nivel de ambos.'])
-        legend.append(['Reparto','50 % por grupo; las mitades no enteras requieren el entero superior.'])
-    for centre,limits in TARGETS.items():legend.append([centre,*(group_targets(centre) if grouped else limits)])
+    legend.append(['Centro','Con condiciones','Suficiente','Satisfactorio'])
+    for centre,limits in TARGETS.items():legend.append([centre,*limits])
     legend.column_dimensions['A'].width=44
     legend.column_dimensions['B'].width=55
     sheet.freeze_panes='B2'
@@ -99,19 +95,17 @@ def main():
     columns=['Centro',*codes,'Total']
     config={c:st.column_config.NumberColumn(COLUMN_LABELS.get(c,c)) for c in codes} if data['kind']=='cbua_use_public_matrix_v2' else {}
     st.dataframe(pd.DataFrame(rows,columns=columns).style.apply(total_style,axis=1),hide_index=True,column_config=config,width='stretch',height=min(900,max(180,40+35*len(rows))))
-    st.markdown('**Cumplimiento por tipología de usuario y conjunto del centro**' if data['kind']=='cbua_use_public_matrix_v2' else '**Cumplimiento · solo columna Total**')
+    st.markdown('**Cumplimiento · solo columna Total**')
     st.markdown('<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+''.join(
         '<span style="background:'+color+';color:#333333;padding:6px 10px;border-radius:6px;font-size:0.85rem">'+state+'</span>'
         for state,color in COLORS.items())+'</div>',unsafe_allow_html=True)
-    st.caption('Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
+    st.caption('El color se aplica solo al Total, según la escala general de cada centro. Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
     if data['kind']=='cbua_use_public_matrix_v2':
-        st.caption('Estudiantes: UX 1_1. PDI: bloque agrupado. Cada grupo debe alcanzar su mínimo: el Total refleja el nivel menor de ambos, sin compensar un déficit con el otro grupo. Los mínimos son el 50 % de los objetivos; si la mitad no es entera, se necesita el entero superior.')
         st.caption('UX_2_1_2_3 agrupa UX 2_1, UX 2_4 y UX 2_5: se toma el mayor recuento de cada biblioteca, sin sumarlos. Total = UX 1_1 + bloque agrupado. No equivale a personas únicas.')
     st.download_button('Descargar matriz Excel (.xlsx)',excel(columns,rows),file_name='Matriz_USE.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     with st.expander('Objetivos por centro'):
-        grouped=data['kind']=='cbua_use_public_matrix_v2'
-        st.dataframe(pd.DataFrame([[name,*(group_targets(name) if grouped else limits)] for name,limits in TARGETS.items()],columns=['Centro','Con condiciones por grupo' if grouped else 'Con condiciones','Suficiente por grupo' if grouped else 'Suficiente','Satisfactorio por grupo' if grouped else 'Satisfactorio']),hide_index=True,width='stretch')
+        st.dataframe(pd.DataFrame([[name,*limits] for name,limits in TARGETS.items()],columns=['Centro','Con condiciones','Suficiente','Satisfactorio']),hide_index=True,width='stretch')
     with st.expander('Criterios del recuento'):
         st.caption('Cada respuesta de Forms cuenta como una observación de su cuaderno. No se analizan tareas. '
                    'Se excluyen las respuestas anteriores al corte y las pruebas 65/66 en UX 1_1. '

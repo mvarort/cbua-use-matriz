@@ -20,6 +20,10 @@ La tabla incluye todos los centros del listado de objetivos BUS, aunque no tenga
 
 La columna `UX_2_1_2_3` es el encabezado solicitado para el bloque de **UX 2_1, UX 2_4 y UX 2_5**. No incluye fuentes UX 2_2 ni UX 2_3. Cuenta el máximo de los tres por biblioteca, nunca su suma ni el máximo de los totales globales. El Total suma UX 1_1 y ese bloque. El contrato público v2 conserva la fecha de lectura de las fuentes. Los colores se aplican al total recalculado; no se modifican los objetivos.
 
-## Cumplimiento por usuario
+## Cumplimiento (regla vigente)
 
-Estudiantes corresponde a UX_1_1 y PDI al bloque UX_2_1_2_3. Cada grupo tiene la mitad de los objetivos de cada nivel del centro. Arquitectura: 6/6 con condiciones, 9/9 suficiente, 12/12 satisfactorio. Si la mitad no es entera, alcanzar el 50 % exige el entero superior. Se colorea cada grupo y el Total adopta el menor nivel de ambos. No se compensan déficits entre grupos. Rector Machado y la fila TOTAL permanecen sin relleno. Estos colores se aplican también al Excel; no cambian los recuentos.
+Se mantienen Estudiantes (UX_1_1) y PDI (UX_2_1_2_3) como columnas de recuento sin relleno.
+Solo se colorea Total, usando la escala general original de cada centro, sin exigir
+mínimos independientes por tipología. Arquitectura: 12 con condiciones, 18 suficiente
+y 24 satisfactorio. Rector Machado y la fila TOTAL permanecen sin relleno. La descarga
+Excel utiliza la misma regla. No se modifican datos, objetivos ni agrupación.

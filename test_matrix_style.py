@@ -7,7 +7,7 @@ from shutil import copyfile
 from openpyxl import load_workbook
 import pandas as pd
 from streamlit.testing.v1 import AppTest
-from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows, cell_levels, group_targets, group_level
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows, cell_levels
 from app import excel
 
 
@@ -45,30 +45,15 @@ class MatrixStyleTests(unittest.TestCase):
             row['Centro']=name
             self.assertEqual(total_style(row),['']*6)
 
-    def test_architecture_targets_and_joint_minimum(self):
-        self.assertEqual(group_targets('Arquitectura y Edificación'),(6,9,12))
-        for n,expected in [(5,'Por debajo del primer objetivo'),(6,'Cumplido (con condiciones)'),(8,'Cumplido (con condiciones)'),(9,'Cumplido suficiente'),(11,'Cumplido suficiente'),(12,'Cumplido satisfactorio')]:
-            row={'Centro':'Arquitectura y Edificación','UX_1_1':n,'UX_2_1_2_3':n,'Total':n*2}
-            self.assertEqual(set(cell_levels(row).values()),{expected})
-        row={'Centro':'Arquitectura y Edificación','UX_1_1':100,'UX_2_1_2_3':5,'Total':105}
-        self.assertEqual(cell_levels(row)['UX_1_1'],'Cumplido satisfactorio')
-        self.assertEqual(cell_levels(row)['Total'],'Por debajo del primer objetivo')
-        row['UX_2_1_2_3']=9;row['Total']=109
-        self.assertEqual(cell_levels(row)['Total'],'Cumplido suficiente')
-        for name in ['Rector Machado','TOTAL']:
-            row['Centro']=name
-            self.assertEqual(cell_levels(row),{})
+    def test_grouped_counts_use_general_total_scale_only(self):
+        for total,expected in [(11,'Por debajo del primer objetivo'),(12,'Cumplido (con condiciones)'),(17,'Cumplido (con condiciones)'),(18,'Cumplido suficiente'),(23,'Cumplido suficiente'),(24,'Cumplido satisfactorio')]:
+            row=pd.Series({'Centro':'Arquitectura y Edificación','UX_1_1':total,'UX_2_1_2_3':0,'Total':total})
+            self.assertEqual(cell_levels(row),{'Total':expected})
+            self.assertEqual(total_style(row)[:3],['','',''])
+        row['Centro']='Rector Machado'
+        self.assertEqual(total_style(row),['']*4)
 
-    def test_all_group_thresholds_and_odd_halves(self):
-        for centre,targets in TARGETS.items():
-            for n,label in zip(group_targets(centre),list(COLORS)[1:]):
-                self.assertEqual(group_level(centre,n),label)
-                self.assertNotEqual(group_level(centre,n-1),label)
-            self.assertEqual(group_targets(centre),tuple((n+1)//2 for n in targets))
-        self.assertEqual(group_level('Derecho y Ciencias del Trabajo',10),'Cumplido (con condiciones)')
-        self.assertEqual(group_level('Derecho y Ciencias del Trabajo',11),'Cumplido suficiente')
-
-    def test_excel_group_colours_match_display(self):
+    def test_excel_group_columns_neutral_and_total_general_scale(self):
         columns=['Centro','UX_1_1','UX_2_1_2_3','Total']
         rows=[['Arquitectura y Edificación',12,6,18],['Rector Machado',12,6,18],['TOTAL',24,12,36]]
         book=load_workbook(BytesIO(excel(columns,rows)))
@@ -76,12 +61,12 @@ class MatrixStyleTests(unittest.TestCase):
             sheet=book.active
             self.assertEqual(sheet['B1'].value,'Estudiantes · UX_1_1')
             self.assertEqual(sheet['C1'].value,'PDI · UX_2_1_2_3')
-            self.assertEqual(sheet['B2'].fill.fgColor.rgb[-6:],COLORS['Cumplido satisfactorio'][1:])
-            self.assertEqual(sheet['C2'].fill.fgColor.rgb[-6:],COLORS['Cumplido (con condiciones)'][1:])
-            self.assertEqual(sheet['D2'].fill.fgColor.rgb[-6:],COLORS['Cumplido (con condiciones)'][1:])
-            for cell in ['A2','B3','C3','D3','B4','C4','D4']:
+            self.assertEqual(sheet['D2'].fill.fgColor.rgb[-6:],COLORS['Cumplido suficiente'][1:])
+            for cell in ['A2','B2','C2','B3','C3','D3','B4','C4','D4']:
                 self.assertIsNone(sheet[cell].fill.patternType)
             self.assertEqual(sheet['D2'].value,18)
+            values=list(book['Leyenda'].values)
+            self.assertTrue(any(r[:4]==('Arquitectura y Edificación',12,18,24) for r in values))
         finally:book.close()
 
     def test_seville_time_summer_and_winter(self):

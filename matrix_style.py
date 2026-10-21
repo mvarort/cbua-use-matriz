@@ -1,4 +1,4 @@
-"""Objetivos BUS por estudiantes y PDI, con cumplimiento conjunto del centro."""
+"""Objetivos generales BUS; color exclusivo en el total del centro."""
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -46,34 +46,10 @@ GROUP = 'UX_2_1_2_3'
 COLUMN_LABELS = {'UX_1_1': 'Estudiantes · UX_1_1', GROUP: 'PDI · UX_2_1_2_3'}
 
 
-def group_targets(centre):
-    limits = TARGETS.get(centre)
-    return tuple((n + 1) // 2 for n in limits) if limits is not None else None
-
-
-def group_level(centre, count):
-    limits = group_targets(centre)
-    if limits is None:
-        return None
-    if count >= limits[2]:
-        return 'Cumplido satisfactorio'
-    if count >= limits[1]:
-        return 'Cumplido suficiente'
-    if count >= limits[0]:
-        return 'Cumplido (con condiciones)'
-    return 'Por debajo del primer objetivo'
-
-
 def cell_levels(row):
     centre = row['Centro']
     if centre not in TARGETS:
         return {}
-    if GROUP in row and 'UX_1_1' in row:
-        states = {key: group_level(centre, row[key]) for key in ('UX_1_1', GROUP)}
-        order = list(COLORS)
-        states['Total'] = min(states.values(), key=order.index)
-        return states
-    # Paquetes históricos anteriores a la agrupación: solo total, sin atribuir PDI.
     return {'Total': level(centre, row['Total'])}
 
 
