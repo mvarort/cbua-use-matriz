@@ -90,7 +90,6 @@ def main():
     codes=package_codes(data)
     sidebar_downloads(Path(__file__).parent)
     source=display_rows(data['rows'], codes)
-    st.caption('Se incluyen todos los centros del listado BUS. Un 0 indica que no hay observaciones asociadas en esta instantánea.')
     rows=list(source)
     rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,len(codes)+2)]])
     columns=['Centro',*codes,'Total']

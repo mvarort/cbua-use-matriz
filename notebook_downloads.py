@@ -85,7 +85,6 @@ def sidebar_downloads(root):
                                   placeholder='Selecciona un centro')
     code = st.sidebar.selectbox('Cuaderno UX', CODES, index=None,
                                 placeholder='Selecciona un cuaderno')
-    st.sidebar.caption('2-2 de las bibliotecas = UX 2.4 · 2-3 = UX 2.5')
     if centre is None or code is None:
         return
     content, count = workbook(package['books'][code], centre, code)
