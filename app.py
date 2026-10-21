@@ -7,7 +7,7 @@ import streamlit as st
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
-from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows
+from matrix_style import COLORS, TARGETS, level, total_style, updated_label, display_rows, cell_levels, COLUMN_LABELS, group_targets
 
 LEGACY_CODES=('UX_1_1','UX_2_1','UX_2_4','UX_2_5')
 CODES=('UX_1_1','UX_2_1_2_3')
@@ -42,7 +42,8 @@ def validate(data):
 
 def excel(columns,rows):
     book=Workbook();sheet=book.active;sheet.title='Matriz USE'
-    for i,row in enumerate([columns,*rows],1):
+    headers=[COLUMN_LABELS.get(c,c) if 'UX_2_1_2_3' in columns else c for c in columns]
+    for i,row in enumerate([headers,*rows],1):
         for j,value in enumerate(row,1):
             cell=sheet.cell(i,j,value)
             if isinstance(value,str):cell.data_type='s'
@@ -51,16 +52,20 @@ def excel(columns,rows):
                 cell.font=Font(bold=True,color='FFFFFF' if i==1 else '6E2332')
                 if i==1:cell.fill=PatternFill('solid',fgColor='9E354B')
     for number, row in enumerate(rows, 2):
-        state=level(row[0], row[-1])
-        if state:
-            sheet.cell(number, len(columns)).fill=PatternFill('solid',fgColor=COLORS[state].lstrip('#'))
+        states=cell_levels(dict(zip(columns,row)))
+        for column,state in states.items():
+            sheet.cell(number,columns.index(column)+1).fill=PatternFill('solid',fgColor=COLORS[state].lstrip('#'))
     legend=book.create_sheet('Leyenda')
     legend.append(['Aplicación','Total: UX 1_1 + máximo(UX 2_1, UX 2_4, UX 2_5)' if 'UX_2_1_2_3' in columns else 'Total de los cuatro cuadernos'])
     for state,color in COLORS.items():
         legend.append([state]);legend.cell(legend.max_row,1).fill=PatternFill('solid',fgColor=color.lstrip('#'))
     legend.append(['Sin relleno','Centro sin objetivo definido o total general'])
-    legend.append(['Centro','Con condiciones','Suficiente','Satisfactorio'])
-    for centre,limits in TARGETS.items():legend.append([centre,*limits])
+    legend.append(['Centro (mínimo por grupo)' if 'UX_2_1_2_3' in columns else 'Centro','Con condiciones','Suficiente','Satisfactorio'])
+    grouped='UX_2_1_2_3' in columns
+    if grouped:
+        legend.append(['Regla','Cada grupo debe alcanzar su mínimo; el Total toma el menor nivel de ambos.'])
+        legend.append(['Reparto','50 % por grupo; las mitades no enteras requieren el entero superior.'])
+    for centre,limits in TARGETS.items():legend.append([centre,*(group_targets(centre) if grouped else limits)])
     legend.column_dimensions['A'].width=44
     legend.column_dimensions['B'].width=55
     sheet.freeze_panes='B2'
@@ -92,18 +97,21 @@ def main():
     rows=[r for r in source if not selected or r[0] in selected]
     rows.append(['TOTAL',*[sum(r[i] for r in rows) for i in range(1,len(codes)+2)]])
     columns=['Centro',*codes,'Total']
-    st.dataframe(pd.DataFrame(rows,columns=columns).style.apply(total_style,axis=1),hide_index=True,width='stretch',height=min(900,max(180,40+35*len(rows))))
-    st.markdown('**Cumplimiento · solo columna Total**')
+    config={c:st.column_config.NumberColumn(COLUMN_LABELS.get(c,c)) for c in codes} if data['kind']=='cbua_use_public_matrix_v2' else {}
+    st.dataframe(pd.DataFrame(rows,columns=columns).style.apply(total_style,axis=1),hide_index=True,column_config=config,width='stretch',height=min(900,max(180,40+35*len(rows))))
+    st.markdown('**Cumplimiento por tipología de usuario y conjunto del centro**' if data['kind']=='cbua_use_public_matrix_v2' else '**Cumplimiento · solo columna Total**')
     st.markdown('<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+''.join(
         '<span style="background:'+color+';color:#333333;padding:6px 10px;border-radius:6px;font-size:0.85rem">'+state+'</span>'
         for state,color in COLORS.items())+'</div>',unsafe_allow_html=True)
-    st.caption('Objetivos por centro sobre el total mostrado. Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
+    st.caption('Sin relleno: sin objetivo definido o total general. Rector Machado permanece sin relleno.')
     if data['kind']=='cbua_use_public_matrix_v2':
+        st.caption('Estudiantes: UX 1_1. PDI: bloque agrupado. Cada grupo debe alcanzar su mínimo: el Total refleja el nivel menor de ambos, sin compensar un déficit con el otro grupo. Los mínimos son el 50 % de los objetivos; si la mitad no es entera, se necesita el entero superior.')
         st.caption('UX_2_1_2_3 agrupa UX 2_1, UX 2_4 y UX 2_5: se toma el mayor recuento de cada biblioteca, sin sumarlos. Total = UX 1_1 + bloque agrupado. No equivale a personas únicas.')
     st.download_button('Descargar matriz Excel (.xlsx)',excel(columns,rows),file_name='Matriz_USE.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     with st.expander('Objetivos por centro'):
-        st.dataframe(pd.DataFrame([[name,*limits] for name,limits in TARGETS.items()],columns=['Centro','Con condiciones','Suficiente','Satisfactorio']),hide_index=True,width='stretch')
+        grouped=data['kind']=='cbua_use_public_matrix_v2'
+        st.dataframe(pd.DataFrame([[name,*(group_targets(name) if grouped else limits)] for name,limits in TARGETS.items()],columns=['Centro','Con condiciones por grupo' if grouped else 'Con condiciones','Suficiente por grupo' if grouped else 'Suficiente','Satisfactorio por grupo' if grouped else 'Satisfactorio']),hide_index=True,width='stretch')
     with st.expander('Criterios del recuento'):
         st.caption('Cada respuesta de Forms cuenta como una observación de su cuaderno. No se analizan tareas. '
                    'Se excluyen las respuestas anteriores al corte y las pruebas 65/66 en UX 1_1. '
