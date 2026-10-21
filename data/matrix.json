@@ -1,5 +1,7 @@
 {
-  "updated_utc": "2026-10-20T09:28:23.448448Z",
+  "kind": "cbua_use_public_matrix_v2",
+  "updated_utc": "2026-10-21T07:23:05.986531Z",
+  "from_inclusive": "2026-10-05",
   "rows": [
     {
       "state": "identificado",
@@ -13,7 +15,7 @@
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 14,
+        "UX_1_1": 17,
         "UX_2_1_2_3": 2
       }
     },
@@ -61,7 +63,7 @@
       "state": "identificado",
       "centre": "Informática",
       "counts": {
-        "UX_1_1": 3,
+        "UX_1_1": 6,
         "UX_2_1_2_3": 2
       }
     },
@@ -85,7 +87,7 @@
       "state": "identificado",
       "centre": "Rector Machado",
       "counts": {
-        "UX_1_1": 23,
+        "UX_1_1": 24,
         "UX_2_1_2_3": 1
       }
     },
@@ -93,16 +95,14 @@
       "state": "identificado",
       "centre": "Turismo y Finanzas",
       "counts": {
-        "UX_1_1": 2,
+        "UX_1_1": 3,
         "UX_2_1_2_3": 0
       }
     }
   ],
   "totals": {
-    "UX_1_1": 125,
+    "UX_1_1": 133,
     "UX_2_1_2_3": 59
   },
-  "total": 184,
-  "kind": "cbua_use_public_matrix_v2",
-  "from_inclusive": "2026-10-05"
+  "total": 192
 }
