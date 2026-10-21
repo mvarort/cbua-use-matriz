@@ -1,13 +1,13 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-21T15:02:00.092721Z",
+  "updated_utc": "2026-10-21T16:24:46.133235Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
       "state": "identificado",
       "centre": "Arquitectura y Edificación",
       "counts": {
-        "UX_1_1": 10,
+        "UX_1_1": 14,
         "UX_2_1_2_3": 10
       }
     },
@@ -15,8 +15,8 @@
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 17,
-        "UX_2_1_2_3": 11
+        "UX_1_1": 27,
+        "UX_2_1_2_3": 13
       }
     },
     {
@@ -39,7 +39,7 @@
       "state": "identificado",
       "centre": "Derecho y Ciencias del Trabajo",
       "counts": {
-        "UX_1_1": 29,
+        "UX_1_1": 31,
         "UX_2_1_2_3": 18
       }
     },
@@ -47,7 +47,7 @@
       "state": "identificado",
       "centre": "Económicas",
       "counts": {
-        "UX_1_1": 0,
+        "UX_1_1": 3,
         "UX_2_1_2_3": 6
       }
     },
@@ -79,7 +79,7 @@
       "state": "identificado",
       "centre": "Ingeniería",
       "counts": {
-        "UX_1_1": 8,
+        "UX_1_1": 10,
         "UX_2_1_2_3": 8
       }
     },
@@ -87,7 +87,7 @@
       "state": "identificado",
       "centre": "Matemáticas",
       "counts": {
-        "UX_1_1": 0,
+        "UX_1_1": 8,
         "UX_2_1_2_3": 4
       }
     },
@@ -103,7 +103,7 @@
       "state": "identificado",
       "centre": "Rector Machado",
       "counts": {
-        "UX_1_1": 24,
+        "UX_1_1": 32,
         "UX_2_1_2_3": 1
       }
     },
@@ -111,14 +111,14 @@
       "state": "identificado",
       "centre": "Turismo y Finanzas",
       "counts": {
-        "UX_1_1": 3,
+        "UX_1_1": 7,
         "UX_2_1_2_3": 0
       }
     }
   ],
   "totals": {
-    "UX_1_1": 133,
-    "UX_2_1_2_3": 91
+    "UX_1_1": 174,
+    "UX_2_1_2_3": 93
   },
-  "total": 224
+  "total": 267
 }
