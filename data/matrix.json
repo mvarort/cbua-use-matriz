@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-21T07:23:05.986531Z",
+  "updated_utc": "2026-10-21T11:28:49.685954Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -8,7 +8,7 @@
       "centre": "Arquitectura y Edificación",
       "counts": {
         "UX_1_1": 10,
-        "UX_2_1_2_3": 8
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -16,7 +16,7 @@
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
         "UX_1_1": 17,
-        "UX_2_1_2_3": 2
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -32,7 +32,7 @@
       "centre": "Comunicación",
       "counts": {
         "UX_1_1": 8,
-        "UX_2_1_2_3": 7
+        "UX_2_1_2_3": 8
       }
     },
     {
@@ -40,7 +40,15 @@
       "centre": "Derecho y Ciencias del Trabajo",
       "counts": {
         "UX_1_1": 29,
-        "UX_2_1_2_3": 11
+        "UX_2_1_2_3": 16
+      }
+    },
+    {
+      "state": "identificado",
+      "centre": "Económicas",
+      "counts": {
+        "UX_1_1": 0,
+        "UX_2_1_2_3": 6
       }
     },
     {
@@ -64,7 +72,7 @@
       "centre": "Informática",
       "counts": {
         "UX_1_1": 6,
-        "UX_2_1_2_3": 2
+        "UX_2_1_2_3": 3
       }
     },
     {
@@ -72,7 +80,7 @@
       "centre": "Ingeniería",
       "counts": {
         "UX_1_1": 8,
-        "UX_2_1_2_3": 6
+        "UX_2_1_2_3": 8
       }
     },
     {
@@ -102,7 +110,7 @@
   ],
   "totals": {
     "UX_1_1": 133,
-    "UX_2_1_2_3": 59
+    "UX_2_1_2_3": 84
   },
-  "total": 192
+  "total": 217
 }
