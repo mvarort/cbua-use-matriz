@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-22T10:50:02.541562Z",
+  "updated_utc": "2026-10-22T15:17:04.080773Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -15,8 +15,8 @@
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 27,
-        "UX_2_1_2_3": 13
+        "UX_1_1": 28,
+        "UX_2_1_2_3": 16
       }
     },
     {
@@ -39,8 +39,8 @@
       "state": "identificado",
       "centre": "Derecho y Ciencias del Trabajo",
       "counts": {
-        "UX_1_1": 31,
-        "UX_2_1_2_3": 19
+        "UX_1_1": 32,
+        "UX_2_1_2_3": 20
       }
     },
     {
@@ -63,8 +63,8 @@
       "state": "identificado",
       "centre": "Filosofía y Psicología",
       "counts": {
-        "UX_1_1": 3,
-        "UX_2_1_2_3": 0
+        "UX_1_1": 6,
+        "UX_2_1_2_3": 3
       }
     },
     {
@@ -111,14 +111,14 @@
       "state": "identificado",
       "centre": "Turismo y Finanzas",
       "counts": {
-        "UX_1_1": 8,
+        "UX_1_1": 11,
         "UX_2_1_2_3": 0
       }
     }
   ],
   "totals": {
-    "UX_1_1": 174,
-    "UX_2_1_2_3": 98
+    "UX_1_1": 182,
+    "UX_2_1_2_3": 105
   },
-  "total": 272
+  "total": 287
 }
