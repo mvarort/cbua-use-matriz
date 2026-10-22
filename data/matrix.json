@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-22T09:18:33.187183Z",
+  "updated_utc": "2026-10-22T10:50:02.541562Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -71,7 +71,7 @@
       "state": "identificado",
       "centre": "Informática",
       "counts": {
-        "UX_1_1": 6,
+        "UX_1_1": 4,
         "UX_2_1_2_3": 3
       }
     },
@@ -117,8 +117,8 @@
     }
   ],
   "totals": {
-    "UX_1_1": 176,
+    "UX_1_1": 174,
     "UX_2_1_2_3": 98
   },
-  "total": 274
+  "total": 272
 }
