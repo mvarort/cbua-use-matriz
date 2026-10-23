@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-23T07:09:47.001916Z",
+  "updated_utc": "2026-10-23T10:55:50.672409Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -9,6 +9,14 @@
       "counts": {
         "UX_1_1": 14,
         "UX_2_1_2_3": 10
+      }
+    },
+    {
+      "state": "identificado",
+      "centre": "Bellas Artes",
+      "counts": {
+        "UX_1_1": 2,
+        "UX_2_1_2_3": 1
       }
     },
     {
@@ -55,16 +63,16 @@
       "state": "identificado",
       "centre": "Educación",
       "counts": {
-        "UX_1_1": 7,
-        "UX_2_1_2_3": 5
+        "UX_1_1": 8,
+        "UX_2_1_2_3": 6
       }
     },
     {
       "state": "identificado",
       "centre": "Filosofía y Psicología",
       "counts": {
-        "UX_1_1": 6,
-        "UX_2_1_2_3": 3
+        "UX_1_1": 8,
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -111,14 +119,14 @@
       "state": "identificado",
       "centre": "Turismo y Finanzas",
       "counts": {
-        "UX_1_1": 11,
+        "UX_1_1": 12,
         "UX_2_1_2_3": 0
       }
     }
   ],
   "totals": {
-    "UX_1_1": 185,
-    "UX_2_1_2_3": 105
+    "UX_1_1": 191,
+    "UX_2_1_2_3": 114
   },
-  "total": 290
+  "total": 305
 }
