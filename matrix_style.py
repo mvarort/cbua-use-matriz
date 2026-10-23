@@ -10,7 +10,7 @@ TARGETS = {
     'Comunicación': (8, 12, 16),
     'CRAI Antonio de Ulloa': (24, 36, 48),
     'Derecho y Ciencias del Trabajo': (14, 21, 28),
-    'Económicas': (8, 12, 16),
+    'Económicas': (6, 9, 12),
     'Educación': (10, 15, 20),
     'Filosofía y Psicología': (10, 15, 20),
     'Humanidades': (22, 33, 44),
