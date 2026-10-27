@@ -1,14 +1,14 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-23T10:55:50.672409Z",
+  "updated_utc": "2026-10-27T08:39:31.955461Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
       "state": "identificado",
       "centre": "Arquitectura y Edificación",
       "counts": {
-        "UX_1_1": 14,
-        "UX_2_1_2_3": 10
+        "UX_1_1": 16,
+        "UX_2_1_2_3": 11
       }
     },
     {
@@ -16,15 +16,15 @@
       "centre": "Bellas Artes",
       "counts": {
         "UX_1_1": 2,
-        "UX_2_1_2_3": 1
+        "UX_2_1_2_3": 7
       }
     },
     {
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 28,
-        "UX_2_1_2_3": 16
+        "UX_1_1": 31,
+        "UX_2_1_2_3": 20
       }
     },
     {
@@ -47,8 +47,8 @@
       "state": "identificado",
       "centre": "Derecho y Ciencias del Trabajo",
       "counts": {
-        "UX_1_1": 32,
-        "UX_2_1_2_3": 20
+        "UX_1_1": 34,
+        "UX_2_1_2_3": 22
       }
     },
     {
@@ -63,8 +63,8 @@
       "state": "identificado",
       "centre": "Educación",
       "counts": {
-        "UX_1_1": 8,
-        "UX_2_1_2_3": 6
+        "UX_1_1": 9,
+        "UX_2_1_2_3": 8
       }
     },
     {
@@ -77,10 +77,18 @@
     },
     {
       "state": "identificado",
+      "centre": "Humanidades",
+      "counts": {
+        "UX_1_1": 8,
+        "UX_2_1_2_3": 5
+      }
+    },
+    {
+      "state": "identificado",
       "centre": "Informática",
       "counts": {
         "UX_1_1": 4,
-        "UX_2_1_2_3": 3
+        "UX_2_1_2_3": 6
       }
     },
     {
@@ -89,6 +97,14 @@
       "counts": {
         "UX_1_1": 10,
         "UX_2_1_2_3": 8
+      }
+    },
+    {
+      "state": "identificado",
+      "centre": "Ingeniería Agronómica",
+      "counts": {
+        "UX_1_1": 7,
+        "UX_2_1_2_3": 2
       }
     },
     {
@@ -111,7 +127,7 @@
       "state": "identificado",
       "centre": "Rector Machado",
       "counts": {
-        "UX_1_1": 32,
+        "UX_1_1": 40,
         "UX_2_1_2_3": 1
       }
     },
@@ -120,13 +136,13 @@
       "centre": "Turismo y Finanzas",
       "counts": {
         "UX_1_1": 12,
-        "UX_2_1_2_3": 0
+        "UX_2_1_2_3": 4
       }
     }
   ],
   "totals": {
-    "UX_1_1": 191,
-    "UX_2_1_2_3": 114
+    "UX_1_1": 222,
+    "UX_2_1_2_3": 143
   },
-  "total": 305
+  "total": 365
 }
