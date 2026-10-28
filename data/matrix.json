@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-28T06:54:59.536677Z",
+  "updated_utc": "2026-10-28T12:02:24.763361Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -23,7 +23,7 @@
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 32,
+        "UX_1_1": 29,
         "UX_2_1_2_3": 20
       }
     },
@@ -141,8 +141,8 @@
     }
   ],
   "totals": {
-    "UX_1_1": 237,
+    "UX_1_1": 234,
     "UX_2_1_2_3": 150
   },
-  "total": 387
+  "total": 384
 }
