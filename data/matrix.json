@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-27T08:39:31.955461Z",
+  "updated_utc": "2026-10-28T06:54:59.536677Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -15,15 +15,15 @@
       "state": "identificado",
       "centre": "Bellas Artes",
       "counts": {
-        "UX_1_1": 2,
-        "UX_2_1_2_3": 7
+        "UX_1_1": 5,
+        "UX_2_1_2_3": 10
       }
     },
     {
       "state": "identificado",
       "centre": "CRAI Antonio de Ulloa",
       "counts": {
-        "UX_1_1": 31,
+        "UX_1_1": 32,
         "UX_2_1_2_3": 20
       }
     },
@@ -87,8 +87,8 @@
       "state": "identificado",
       "centre": "Informática",
       "counts": {
-        "UX_1_1": 4,
-        "UX_2_1_2_3": 6
+        "UX_1_1": 8,
+        "UX_2_1_2_3": 8
       }
     },
     {
@@ -96,7 +96,7 @@
       "centre": "Ingeniería",
       "counts": {
         "UX_1_1": 10,
-        "UX_2_1_2_3": 8
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -127,7 +127,7 @@
       "state": "identificado",
       "centre": "Rector Machado",
       "counts": {
-        "UX_1_1": 40,
+        "UX_1_1": 47,
         "UX_2_1_2_3": 1
       }
     },
@@ -141,8 +141,8 @@
     }
   ],
   "totals": {
-    "UX_1_1": 222,
-    "UX_2_1_2_3": 143
+    "UX_1_1": 237,
+    "UX_2_1_2_3": 150
   },
-  "total": 365
+  "total": 387
 }
