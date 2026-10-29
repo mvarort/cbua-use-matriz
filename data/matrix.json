@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-28T12:02:24.763361Z",
+  "updated_utc": "2026-10-29T06:52:58.253130Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -15,8 +15,8 @@
       "state": "identificado",
       "centre": "Bellas Artes",
       "counts": {
-        "UX_1_1": 5,
-        "UX_2_1_2_3": 10
+        "UX_1_1": 8,
+        "UX_2_1_2_3": 12
       }
     },
     {
@@ -79,8 +79,8 @@
       "state": "identificado",
       "centre": "Humanidades",
       "counts": {
-        "UX_1_1": 8,
-        "UX_2_1_2_3": 5
+        "UX_1_1": 12,
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -141,8 +141,8 @@
     }
   ],
   "totals": {
-    "UX_1_1": 234,
-    "UX_2_1_2_3": 150
+    "UX_1_1": 241,
+    "UX_2_1_2_3": 157
   },
-  "total": 384
+  "total": 398
 }
