@@ -1,6 +1,6 @@
 {
   "kind": "cbua_use_public_matrix_v2",
-  "updated_utc": "2026-10-29T06:52:58.253130Z",
+  "updated_utc": "2026-10-30T07:00:35.503160Z",
   "from_inclusive": "2026-10-05",
   "rows": [
     {
@@ -63,8 +63,8 @@
       "state": "identificado",
       "centre": "Educación",
       "counts": {
-        "UX_1_1": 9,
-        "UX_2_1_2_3": 8
+        "UX_1_1": 10,
+        "UX_2_1_2_3": 10
       }
     },
     {
@@ -141,8 +141,8 @@
     }
   ],
   "totals": {
-    "UX_1_1": 241,
-    "UX_2_1_2_3": 157
+    "UX_1_1": 242,
+    "UX_2_1_2_3": 159
   },
-  "total": 398
+  "total": 401
 }
